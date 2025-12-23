@@ -27,7 +27,6 @@ class RouterRestTest {
         RouterRest routerRest = new RouterRest();
         RouterFunction<ServerResponse> routerFunction = routerRest.routerFunction(handler);
 
-        // Bind the router function directly (unit-ish, no Spring context needed)
         webTestClient = WebTestClient.bindToRouterFunction(routerFunction).build();
     }
 

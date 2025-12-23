@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.MediaType;
+import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.*;
 
 class StudentHandlerTest {
 
+    private DatabaseClient db;
     private CreateStudentUseCase createStudentUseCase;
     private GetActiveStudentsUseCase getActiveStudentsUseCase;
     private Validator validator;
@@ -34,12 +36,13 @@ class StudentHandlerTest {
 
     @BeforeEach
     void setup() {
+        db = Mockito.mock(DatabaseClient.class);
         createStudentUseCase = Mockito.mock(CreateStudentUseCase.class);
         getActiveStudentsUseCase = Mockito.mock(GetActiveStudentsUseCase.class);
         validator = Mockito.mock(Validator.class);
 
         StudentHandler handler =
-                new StudentHandler(createStudentUseCase, getActiveStudentsUseCase, validator);
+                new StudentHandler(db,createStudentUseCase, getActiveStudentsUseCase, validator);
 
         RouterFunction<ServerResponse> router = new RouterRest().routerFunction(handler);
 
