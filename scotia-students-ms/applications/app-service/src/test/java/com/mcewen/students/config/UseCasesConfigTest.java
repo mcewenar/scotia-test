@@ -1,11 +1,17 @@
 package com.mcewen.students.config;
 
+import com.mcewen.students.model.gateways.StudentRepository;
+import com.mcewen.students.usecase.CreateStudentUseCase;
+import com.mcewen.students.usecase.GetActiveStudentsUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 class UseCasesConfigTest {
 
@@ -23,6 +29,11 @@ class UseCasesConfigTest {
             }
 
             assertTrue(useCaseBeanFound, "No beans ending with 'Use Case' were found");
+            assertNotNull(context.getBean(CreateStudentUseCase.class));
+            assertNotNull(context.getBean(GetActiveStudentsUseCase.class));
+
+            assertTrue(context.containsBean("createStudentUseCase"));
+            assertTrue(context.containsBean("getActiveStudentsUseCase"));
         }
     }
 
@@ -31,8 +42,8 @@ class UseCasesConfigTest {
     static class TestConfig {
 
         @Bean
-        public MyUseCase myUseCase() {
-            return new MyUseCase();
+        StudentRepository studentRepository() {
+            return mock(StudentRepository.class);
         }
     }
 
