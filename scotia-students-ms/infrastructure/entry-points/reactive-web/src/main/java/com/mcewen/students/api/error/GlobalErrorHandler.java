@@ -13,10 +13,10 @@ public class GlobalErrorHandler {
 
     @ExceptionHandler(DuplicateStudentIdException.class)
     public Mono<ProblemDetail> handleDuplicate(DuplicateStudentIdException ex) {
-        ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.CONFLICT);
-        pd.setTitle("Duplicate student id");
-        pd.setDetail(ex.getMessage());
-        return Mono.just(pd);
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        problemDetail.setTitle("Duplicate student id");
+        problemDetail.setDetail(ex.getMessage());
+        return Mono.just(problemDetail);
     }
 
     @ExceptionHandler(BadRequestResponseException.class)
